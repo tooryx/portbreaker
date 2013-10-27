@@ -26,14 +26,14 @@
 
 import random, thread, socket, struct, codecs
 import SocketServer
-import libs.exrex as exrex
+import libs.rstr as rstr
 
 # FIXME: Hotfix. Need to find a better solution.
 SO_ORIGINAL_DST  = 80
 
 ## FIXME: Need for configuration ##
 HOST = "0.0.0.0"
-PORT = 4444
+PORT = 5998
 BANNER_HANDLER = None
 PROTO_PARSER = None
 
@@ -80,7 +80,7 @@ class SignatureParser(object):
                     # FIXME: This does not handle \| so well.
                     line = line.split("|")
                     protocol = line[0].split()[1].strip()
-                    banner = line[1].strip()
+                    banner = line[1].strip()#.replace("\w", "[a-zA-Z0-9]")
 
                     if not protocol in self._all_banners.keys():
                         self._all_banners[protocol] = []
@@ -101,7 +101,7 @@ class SignatureParser(object):
             del self._all_banners[protocol]
 
         try:
-            banner = exrex.getone(banner, limit=5)
+            banner = rstr.xeger(banner)
         except Exception as e:
             print "Exception raised [%s]: %s" % (protocol, e)
             return self.getRandom(protocol)
