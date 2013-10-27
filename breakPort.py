@@ -14,6 +14,8 @@
 #   - try to sniff connexion to insert banner ?
 #   - try to break ssl to insert banner ?
 #   - opened port --> we really open ports. Needs threads. A lot of them.
+#   - Exception handling !!
+#   - debug messages
 #
 # Options management:
 #   - udp
@@ -22,19 +24,21 @@
 #
 # END OF TODO #
 
-import random
+import random, thread, socket, struct, codecs
 import SocketServer
 import libs.exrex as exrex
-import thread
+
+# FIXME: Hotfix. Need to find a better solution.
+SO_ORIGINAL_DST  = 80
 
 ## FIXME: Need for configuration ##
-HOST = "localhost"
-#PORT = random.choice([8080,9000,3389,10000])
+HOST = "0.0.0.0"
+PORT = 4444
 BANNER_HANDLER = None
 PROTO_PARSER = None
 
 # FIXME: debug
-#print PORT
+print PORT
 
 class ProtocolParser(object):
 
@@ -70,7 +74,7 @@ class SignatureParser(object):
         self.parse()
 
     def parse(self):
-        with open(self._file, "r") as f:
+        with codecs.open(self._file, "r", encoding="utf-8") as f:
             for line in f:
                 if line[:5] == "match":
                     # FIXME: This does not handle \| so well.
@@ -90,6 +94,7 @@ class SignatureParser(object):
 
         if not protocol in self._all_banners.keys():
             randomized_protocol = random.choice(self._all_banners.keys())
+            print "Randomized protocol: %s" % randomized_protocol
             banner = random.choice(self._all_banners[randomized_protocol])
         else:
             banner = random.choice(self._all_banners[protocol])
@@ -105,26 +110,31 @@ class SignatureParser(object):
 
         return banner
 
-class TCPHandler(SocketServer.BaseRequestHandler):
+class TCPHandler(SocketServer.StreamRequestHandler):
 
     def handle(self):
-        data = self.request.recv(1024).strip()
-        port = str(self.server.socket.getsockname()[1]) + "/tcp"
-        protocol = PROTO_PARSER.getProtocol(port)
+        # We wait for client input even if we don't really care.
+        print "------------------------------"
+        self.rfile.readline().strip()
+
+        # Retrieving the original port.
+        sockopt = self.request.getsockopt(socket.SOL_IP, SO_ORIGINAL_DST, 16)
+        port, _ = struct.unpack("!2xH4s8x", sockopt)
+
+        # Retrieving the associated protocol.
+        protocol = PROTO_PARSER.getProtocol(str(port) + "/tcp")
         print port, protocol
-        self.request.sendall(BANNER_HANDLER.getRandom(protocol))
+
+        # Sending back a random banner. This banner will be sent back every time
+        #   the same protocol is requested.
+        banner = BANNER_HANDLER.getRandom(protocol).encode('utf-8')
+        print "Banner: '%s'" % banner
+        self.wfile.write(banner)
+        print "------------------------------"
 
 PROTO_PARSER = ProtocolParser("/usr/share/nmap/nmap-services")
 BANNER_HANDLER = SignatureParser("/usr/share/nmap/nmap-service-probes")
 
-for port in range(1024,1124):
-    try:
-        server = SocketServer.TCPServer((HOST,port), TCPHandler)
-        thread.start_new(server.serve_forever,())
-    except Exception as e:
-        print "Execption [%s]: %s" % (port, e)
-
-while True:
-    continue
-
-
+server = SocketServer.TCPServer((HOST,PORT), TCPHandler)
+print "Starting."
+server.serve_forever()
