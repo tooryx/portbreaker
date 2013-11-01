@@ -39,5 +39,4 @@ sigParser = SignatureParser(arguments.banners_file)
 
 # We can now start the server.
 server = MyTCPServer((arguments.address, arguments.port), TCPHandler, sigParser, protoParser)
-print "Starting."
 server.serve_forever()

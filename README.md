@@ -44,7 +44,7 @@ you'll need to configure a redirection from 1000-2000 to 9990:
 iptables -t nat -A PREROUTING -i eth0 -p tcp -m tcp --dport 1000:2000 --to-ports 9990
 ```
 
-Note: You need to change "eth0" with the name of your interface if it's different.
+*Note: You need to change "eth0" with the name of your interface if it's different.*
 
 ### nmap files ###
 

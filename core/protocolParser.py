@@ -2,13 +2,11 @@
 
 class ProtocolParser(object):
     """
-    FIXME: Comment.
+    Parse an NMAP 'services' file.
+    This file contains every information to retrieve: port number <--> protocol name
     """
 
     def __init__(self, f):
-        """
-        FIXME: Comment.
-        """
         self._file = f
         self._protocols = {}
 
@@ -16,17 +14,32 @@ class ProtocolParser(object):
 
     def parse(self):
         """
-        FIXME: Comment.
+        Parse the services file.
+        This file is of the form:
+          protocol   port  {...}
+
+        The result is a dictionnary of the form: { port: protocol }
         """
         with open(self._file, "r") as f:
             for line in f:
                 if not line[0] == "#":
                     protocol, port = line.strip().split()[:2]
-                    self._protocols[port] = protocol
+
+                    if not port in self._protocols.keys():
+                        self._protocols[port] = protocol
                 else:
                     continue
 
     def getProtocol(self, port):
+        """
+        Given a port number, this function retrieves the associated protocol.
+
+        Parameters:
+          port [string] -- The port to retrieve the protocol for. Example: "22/tcp"
+
+        Return value:
+          The associated protocol, example: ssh
+        """
         if not port in self._protocols:
             return None
 

@@ -5,13 +5,11 @@ import libs.rstr as rstr
 
 class SignatureParser(object):
     """
-    FIXME: Comment.
+    The signature parser will parse an NMAP fingerprint file.
+    It will then handle a dictionnary of protocol and their signatures.
     """
 
     def __init__(self, f):
-        """
-        FIXME: Comment.
-        """
         self._file = f
         self._all_banners = {}
         self._selected_banners = {}
@@ -20,7 +18,11 @@ class SignatureParser(object):
 
     def parse(self):
         """
-        FIXME: Comment.
+        Parse the file.
+        Each line is of the form: match protocol s|signature regexp|{...}
+
+        The resulting dictionnary is of the form:
+          { protocol: [ regexp_signature1, regexp_signature2, ... ] }
         """
         with open(self._file, "r") as f:
             for line in f:
@@ -38,7 +40,17 @@ class SignatureParser(object):
 
     def getRandom(self, protocol):
         """
-        FIXME: Comment.
+        A random signature is taken from the dictionnary.
+          - If the protocol is now defined in the dictionnary, we randomize another protocol.
+          - If a signature has not been selected for this protocol we set one.
+             * We take the regexp and compute a banner with it.
+          - We return the signature for the protocol.
+
+        Parameters:
+          protocol [string] -- The protocol to retrieve the banner for.
+
+        Return value:
+          The banner as a string.
         """
         if protocol in self._selected_banners:
             return self._selected_banners[protocol]
