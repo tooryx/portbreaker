@@ -44,8 +44,14 @@ you'll need to configure a redirection from 1000-2000 to 9990:
 iptables -t nat -A PREROUTING -i eth0 -p tcp -m tcp --dport 1000:2000 --to-ports 9990
 ```
 
-Warning: You need to change "eth0" with the name of your interface if it's different.
+Note: You need to change "eth0" with the name of your interface if it's different.
 
 ### nmap files ###
+
+Finally, breakPort needs a database of fingerprint to simulate and a services
+file to associate a given port to a service.
+Of course, you could use /etc/services, unfortunately this file is not complete enought.
+
+So, you'll need to use the file provided with nmap.
 
 FIXME: How to retrieve files from SVN. A script to do so ?
