@@ -6,13 +6,20 @@ breakPort will try to make port-scan harder for an attacker.
 To do so, breakPort:
 
    - Simulate fake banners on unallowed ports
-   - [Not implemented yet] Tries to make response as slow as possible.
+   - [TODO] Tries to make response as slow as possible.
 
-This result in very... very... long port scanning.
+This result in very... very... long and inaccurate port scan.
 
 ## Usage ##
 
-FIXME: To do.
+usage: breakPort.py [-h] [-p PORT] [-a ADDRESS] [-b BANNERS_FILE]
+                    [-s SERVICES_LIST] [-d]
+
+### Example ###
+
+```
+./breakPort.py -p 9090 -b /usr/share/nmap/nmap-service-probes -s /usr/share/nmap/nmap-services
+```
 
 ## Requirements ##
 
@@ -20,9 +27,6 @@ FIXME: To do.
 
   * Python
   * netfilter: NAT (REDIRECT) support
-
-  * nmap service list?
-  * nmap fingerprint database?
 
 ### What is packaged with breakPort ###
 
@@ -48,10 +52,14 @@ iptables -t nat -A PREROUTING -i eth0 -p tcp -m tcp --dport 1000:2000 --to-ports
 
 ### nmap files ###
 
-Finally, breakPort needs a database of fingerprint to simulate and a services
-file to associate a given port to a service.
-Of course, you could use /etc/services, unfortunately this file is not complete enought.
+Finally, breakPort needs a database of fingerprint and a services file.
+The best files for this are those provided by nmap.
 
-So, you'll need to use the file provided with nmap.
+```
+/usr/share/nmap/nmap-services
+/usr/share/nmap/nma-service-probes
+```
 
-FIXME: How to retrieve files from SVN. A script to do so ?
+If nmap isn't installed on your system, you could checkout the entire tree or grab the files here:
+
+https://svn.nmap.org/nmap/
