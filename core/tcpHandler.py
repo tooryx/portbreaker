@@ -1,6 +1,6 @@
 # LICENSE
 
-import SocketServer
+import socketserver
 import socket, struct
 
 # This is the file descriptor used by the socket library
@@ -8,7 +8,7 @@ import socket, struct
 # More information: /usr/include/linux/netfilter_ipv4.h
 SO_ORIGINAL_DST  = 80
 
-class TCPHandler(SocketServer.StreamRequestHandler):
+class TCPHandler(socketserver.StreamRequestHandler):
 
     def handle(self):
         """

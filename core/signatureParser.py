@@ -24,7 +24,7 @@ class SignatureParser(object):
         The resulting dictionnary is of the form:
           { protocol: [ regexp_signature1, regexp_signature2, ... ] }
         """
-        with open(self._file, "r") as f:
+        with codecs.open(self._file, "r", encoding="utf-8") as f:
             for line in f:
                 if line[:5] == "match":
                     # FIXME: This does not handle \| so well.
@@ -55,23 +55,22 @@ class SignatureParser(object):
         if protocol in self._selected_banners:
             return self._selected_banners[protocol]
 
-        if not protocol in self._all_banners.keys():
-            randomized_protocol = random.choice(self._all_banners.keys())
+        if not protocol in list(self._all_banners.keys()):
+            randomized_protocol = random.choice(list(self._all_banners.keys()))
             randomized_protocol = "diablo2"
-            print "Randomized protocol: %s" % randomized_protocol
+            print("Randomized protocol: %s" % randomized_protocol)
             banner = random.choice(self._all_banners[randomized_protocol])
         else:
             banner = random.choice(self._all_banners[protocol])
             del self._all_banners[protocol]
 
         try:
-            banner = unicode(banner, encoding="utf-8")
-            print 'banner before: %s' % banner
+            print('banner before: %s' % banner)
             banner = rstr.xeger(banner)
-            print 'banner after: %s' % banner
-            print 'len: %i' % len(banner)
+            print('banner after: %s' % banner)
+            print('len: %i' % len(banner))
         except Exception as e:
-            print "Exception raised [%s]: %s" % (protocol, e)
+            print("Exception raised [%s]: %s" % (protocol, e))
             return self.getRandom(protocol)
 
         self._selected_banners[protocol] = banner

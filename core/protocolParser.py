@@ -1,5 +1,7 @@
 # LICENSE HERE
 
+import codecs
+
 class ProtocolParser(object):
     """
     Parse an NMAP 'services' file.
@@ -20,7 +22,7 @@ class ProtocolParser(object):
 
         The result is a dictionnary of the form: { port: protocol }
         """
-        with open(self._file, "r") as f:
+        with codecs.open(self._file, "r", encoding="utf-8") as f:
             for line in f:
                 if not line[0] == "#":
                     protocol, port = line.strip().split()[:2]
