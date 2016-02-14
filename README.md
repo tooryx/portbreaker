@@ -1,4 +1,4 @@
-# breakPort #
+# portbreaker #
 
 Public release: February, 2016
 
@@ -7,12 +7,7 @@ You can use the great portspoof instead: http://portspoof.org/
 
 ## About ##
 
-breakPort will try to make port-scan harder for an attacker.
-To do so, breakPort:
-
-   - Simulate fake banners on unallowed ports
-   - [TODO] Tries to make response as slow as possible.
-
+portbreaker will try to make port-scan harder for an attacker by spoofing fake banners on unallowed ports
 This result in very... very... long and inaccurate port scan.
 
 ## Usage ##
@@ -33,7 +28,7 @@ usage: breakPort.py [-h] [-p PORT] [-a ADDRESS] [-b BANNERS_FILE]
   * Python
   * netfilter: NAT (REDIRECT) support
 
-### What is packaged with breakPort ###
+### What is packaged with portbreaker ###
 
   * [rstr library](https://bitbucket.org/leapfrogdevelopment/rstr/)
 
@@ -41,12 +36,12 @@ usage: breakPort.py [-h] [-p PORT] [-a ADDRESS] [-b BANNERS_FILE]
 
 ### iptables configuration ###
 
-To work breakPort only needs one open port, even a non-reserved one.
+To work portbreaker only needs one open port, even a non-reserved one.
 But to be able to simulate a large range of opened ports, it needs you to
 configure the redirection from the range of port to "break" to the
 given opened port.
 
-For example, if breakPort is opened on 9990 and you want it to break port 1000 to 2000,
+For example, if portbreaker is opened on 9990 and you want it to break port 1000 to 2000,
 you'll need to configure a redirection from 1000-2000 to 9990:
 
 ```
