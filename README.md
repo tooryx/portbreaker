@@ -12,13 +12,11 @@ This result in very... very... long and inaccurate port scan.
 
 ## Usage ##
 
-usage: breakPort.py [-h] [-p PORT] [-a ADDRESS] [-b BANNERS_FILE]
+```
+usage: portBreaker.py [-h] [-p PORT] [-a ADDRESS] [-b BANNERS_FILE]
                     [-s SERVICES_LIST] [-d]
 
-### Example ###
-
-```
-./breakPort.py -p 9090 -b /usr/share/nmap/nmap-service-probes -s /usr/share/nmap/nmap-services
+./portBreaker.py -p 9090 -b /usr/share/nmap/nmap-service-probes -s /usr/share/nmap/nmap-services
 ```
 
 ## Requirements ##
