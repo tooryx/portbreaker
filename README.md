@@ -1,5 +1,8 @@
 # portbreaker #
 
+[![Maintained](https://img.shields.io/badge/Maintained-Not%20maintained-red.svg)]()
+[![Stable](https://img.shields.io/badge/Status-Unstable-red.svg)]()
+
 Public release: February, 2016
 
 The tool was created for fun. It is not maintained anymore.
