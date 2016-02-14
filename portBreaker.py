@@ -1,7 +1,7 @@
 #! /usr/bin/python
 
-## LICENSE HERE ##
-## END OF LICENSE #
+# This file is part of portbreaker.
+# Please see LICENSE for details.
 
 import argparse
 
@@ -17,7 +17,7 @@ DEFAULT_N_SERVICES      = "/usr/share/nmap/nmap-services"
 DEFAULT_N_FINGERPRINT   = "/usr/share/nmap/nmap-service-probes"
 
 # Argument parsing
-arg_parser = argparse.ArgumentParser(description="breakPort tries to make port scanning harder.")
+arg_parser = argparse.ArgumentParser(description="portbreaker tries to make port scanning harder.")
 
 # core options
 core_options = arg_parser.add_argument_group("core options")
