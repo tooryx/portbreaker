@@ -1,5 +1,10 @@
 # breakPort #
 
+Public release: February, 2016
+
+The tool was created for fun. It is not maintained anymore.
+You can use the great portspoof instead: http://portspoof.org/
+
 ## About ##
 
 breakPort will try to make port-scan harder for an attacker.

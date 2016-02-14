@@ -1,4 +1,5 @@
-# LICENCE
+# This file is part of portbreaker.
+# Please see LICENSE for details.
 
 import codecs, random
 import libs.rstr as rstr

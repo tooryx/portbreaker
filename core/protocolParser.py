@@ -1,4 +1,5 @@
-# LICENSE HERE
+# This file is part of portbreaker.
+# Please see LICENSE for details.
 
 import codecs
 
